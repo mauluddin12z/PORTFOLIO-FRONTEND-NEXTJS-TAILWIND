@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth !important;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(-8%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+.my-animate-bounce:hover {
+  animation: bounce 1s infinite;
+}
+
+path.myLogo_svg__color {
+  @apply fill-accent-2 dark:fill-dark-accent-2;
+}
+path.rectangleDotFill_svg__color {
+  @apply fill-accent-3/80 dark:fill-dark-accent-3/80;
+}
+path.stripeCircle_svg__color {
+  @apply fill-accent-1/30 dark:fill-dark-accent-1/30;
+}
+path.plusSymbol_svg__color {
+  @apply fill-accent-2 dark:fill-dark-accent-2;
+}
+path.Frame_svg__color {
+  @apply fill-accent-1 dark:fill-dark-accent-1;
+}
+
+path.wave_svg__color {
+  @apply fill-background-1/30 dark:fill-dark-background-1/30;
+}
