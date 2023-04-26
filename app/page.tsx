@@ -14,7 +14,7 @@ export default function Home() {
       <div className="fixed bottom-0 right-0 z-20">
         <div className="lg:w-28 lg:h-28 w-14 h-14">
           <a
-            href={"#"}
+            href="#"
             className="flex justify-center items-center w-10 h-10 rounded-full text-accent-1 dark:text-dark-accent-1 bg-background-2 dark:bg-dark-background-2 dark:hover:bg-dark-background-2/60 hover:bg-background-2/60 focus:ring-4 focus:ring-background-2/30 dark:focus:ring-dark-background-2/30 shadow-[0px_0px_10px] shadow-[#d6d6d6] dark:shadow-dark-background-1 my-animate-bounce"
           >
             <i className="fa-solid fa-angles-up"></i>
