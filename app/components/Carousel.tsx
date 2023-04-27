@@ -49,7 +49,6 @@ export default function CertificateSection() {
       </div>
     );
   }
-
   return (
     <>
       <div className="relative flex justify-center items-center h-fit w-fit">
