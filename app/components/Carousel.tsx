@@ -42,7 +42,7 @@ export default function CertificateSection() {
   const renderItems = [];
   for (let i = 0; i < 9; i++) {
     renderItems.push(
-      <div key={i} className="w-96 h-auto aspect-square lg:p-4 p-5">
+      <div key={i} className="w-96 h-72 lg:p-4 p-5">
         <div className="w-full h-full flex flex-col rounded-lg bg-background-2 dark:bg-dark-background-2 shadow-[0px_0px_3px] shadow-[#d6d6d6] dark:shadow-dark-background-1 overflow-hidden p-2 justify-between">
           <Loading />
         </div>

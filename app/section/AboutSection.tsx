@@ -34,7 +34,7 @@ export default function AboutSection() {
               </div>
               <div className="mb-5">
                 <div className="font-semibold text-accent-1 dark:text-dark-accent-1 text-[16px]">
-                  Universitas Sriwijaya Fakultas Ilmu Komputer (2018-2022)
+                  Universitas Sriwijaya Fakultas Ilmu Komputer (2018 - 2022)
                 </div>
                 <div className="text-accent-4 dark:text-dark-accent-4 text-[14px] flex flex-col">
                   <span>Jurusan: Sistem Informasi</span>
