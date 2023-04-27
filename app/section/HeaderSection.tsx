@@ -85,7 +85,7 @@ export default function HeaderSection() {
           className={[
             "lg:flex lg:h-auto w-auto z-40",
             menu
-              ? "fixed bg-background-1 inset-0 text-accent-1 dark:text-dark-accent-1 w-full h-screen flex justify-center text-center"
+              ? "fixed bg-background-1 dark:bg-dark-background-1 inset-0 text-accent-1 dark:text-dark-accent-1 w-full h-screen flex justify-center text-center"
               : "hidden",
           ].join(" ")}
         >
