@@ -18,7 +18,7 @@ const getCertificates = async () => {
 };
 
 export default function page() {
-  const { isAuth } = useAuth();
+  const { isAuth, axiosJWT, token } = useAuth();
   const { mutate } = useSWRConfig();
   const myLoader: ImageLoader = ({ src }) => {
     return `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}uploads/certificates/images/${src}`;
@@ -73,11 +73,12 @@ export default function page() {
     formData.append("pdf", pdf);
     setIsLoading(true);
     try {
-      await axios.post(
+      await axiosJWT.post(
         `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}certificates`,
         formData,
         {
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-type": "multipart/form-data",
           },
         }
@@ -120,9 +121,15 @@ export default function page() {
     formData.append("pdf", pdf);
     setIsLoading(true);
     try {
-      await axios.patch(
+      await axiosJWT.patch(
         `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}certificates/${selectedId}`,
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "multipart/form-data",
+          },
+        }
       );
       setIsModalUpdateOpen(false);
       setPreview("");
@@ -156,8 +163,13 @@ export default function page() {
   const handleDelete = async (selectedId: number) => {
     setIsLoading(true);
     try {
-      await axios.delete(
-        `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}certificates/${selectedId}`
+      await axiosJWT.delete(
+        `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}certificates/${selectedId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setIsModalDeleteOpen(false);
       window.scrollTo(0, 0);

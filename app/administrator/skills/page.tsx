@@ -18,7 +18,7 @@ const getSkills = async () => {
 };
 
 export default function page() {
-  const { isAuth } = useAuth();
+  const { isAuth, axiosJWT, token } = useAuth();
   const { mutate } = useSWRConfig();
   const myLoader: ImageLoader = ({ src }) => {
     return `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}uploads/skills/images/${src}`;
@@ -73,6 +73,7 @@ export default function page() {
         formData,
         {
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-type": "multipart/form-data",
           },
         }
@@ -116,7 +117,13 @@ export default function page() {
     try {
       await axios.patch(
         `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}skills/${selectedId}`,
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-type": "multipart/form-data",
+          },
+        }
       );
       setIsModalUpdateOpen(false);
       setPreview("");
@@ -151,7 +158,12 @@ export default function page() {
     setIsLoading(true);
     try {
       await axios.delete(
-        `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}skills/${selectedId}`
+        `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}skills/${selectedId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setIsModalDeleteOpen(false);
       window.scrollTo(0, 0);

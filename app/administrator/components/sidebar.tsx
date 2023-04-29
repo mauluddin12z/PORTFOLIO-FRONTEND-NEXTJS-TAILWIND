@@ -120,7 +120,7 @@ export default function sidebar({ children }: Props) {
                         className={`rounded-lg flex items-center ${
                           sidebarToggle ? "p-3" : "p-0 py-3 justify-center"
                         }`}
-                        href={pathname.split("/")[1] + sidebar.link}
+                        href={"/administrator/" + sidebar.link}
                       >
                         <i
                           className={`${sidebar.icon} ${

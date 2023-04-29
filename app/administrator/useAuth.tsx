@@ -7,6 +7,9 @@ import axios from "axios";
 export default function useAuth() {
   const [isAuth, setIsAuth] = useState(false);
   const [msgToken, setMsgToken] = useState("");
+  const [token, setToken] = useState("");
+  const [expire, setExpire] = useState<number>(0);
+  const [users1, setUsers1] = useState([]);
   const router = useRouter();
   const accessToken: any =
     typeof localStorage !== "undefined"
@@ -16,40 +19,50 @@ export default function useAuth() {
   useEffect(() => {
     refreshToken();
   }, []);
+
   const refreshToken = async () => {
     try {
-      const decoded: any = jwt_decode(accessToken);
-
-      const expirationTime = decoded.exp * 1000;
-      const isExpired = Date.now() > expirationTime;
-
-      const getToken = async () => {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}token`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-            withCredentials: true,
-          }
-        );
-        return response;
-      };
-      if (isExpired) {
-        const response = await getToken();
-        const newAccessToken = response.data.accessToken;
-        localStorage.setItem("accessToken", newAccessToken);
-        setIsAuth(true);
-        setMsgToken(response.data.msg);
-      } else {
-        const response = await getToken();
-        setIsAuth(true);
-        setMsgToken(response.data.msg);
-      }
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_MY_BACKEND_URL}token`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        withCredentials: true,
+      });
+      setToken(response.data.accessToken);
+      const decoded: any = jwt_decode(response.data.accessToken);
+      setExpire(decoded.exp);
+      setIsAuth(true)
     } catch (error: any) {
-      router.push("/administrator/login");
-      setMsgToken(error.response?.data.msg);
+      if (error.response) {
+        router.push("/administrator/login");
+      }
     }
   };
-  return { isAuth, msgToken, accessToken };
+
+  const axiosJWT = axios.create();
+
+  axiosJWT.interceptors.request.use(
+    async (config) => {
+      const isExpired = Date.now() > expire * 1000;
+      if (isExpired) {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_MY_BACKEND_URL}token`,{
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          withCredentials: true,
+        });
+        config.headers.Authorization = `Bearer ${response.data.accessToken}`;
+        localStorage.setItem("accessToken", response.data.accessToken);
+        setToken(response.data.accessToken);
+        const decoded: any = jwt_decode(response.data.accessToken);
+        setExpire(decoded.exp);
+        setIsAuth(true)
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+  return { isAuth, msgToken, accessToken, axiosJWT, token };
 }

@@ -16,7 +16,7 @@ export default function RootLayout({
       <head>
         <link
           rel="shortcut icon"
-          href="https://hidayatmauluddinportfolio.vercel.app/images/myLogo.ico?v=2"
+          href="/images/myLogo.ico?v=2"
           type="image/x-icon"
           sizes="any"
         />
