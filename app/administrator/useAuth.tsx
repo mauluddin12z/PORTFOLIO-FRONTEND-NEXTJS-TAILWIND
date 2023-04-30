@@ -35,6 +35,7 @@ export default function useAuth() {
     } catch (error: any) {
       if (error.response) {
         router.push("/administrator/login");
+        setMsgToken(error.response?.data.msg);
       }
     }
   };

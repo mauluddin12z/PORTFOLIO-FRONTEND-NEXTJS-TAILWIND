@@ -15,16 +15,13 @@ const getProjects = async () => {
 };
 
 export default function ProjectsSection() {
-  const myLoader: ImageLoader = ({ src }) => {
-    return `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}uploads/projects/images/${src}`;
-  };
   const { data } = useSWR("projects", getProjects);
   const renderItems = [];
   for (let i = 0; i < 2; i++) {
     renderItems.push(
       <div className="lg:w-6/12 w-full lg:p-7 p-4 h-[510px]" key={i}>
         <div className="w-full h-full lg:p-10 p-7 rounded-xl bg-background-1 dark:bg-dark-background-1 flex flex-col justify-center shadow-[0px_0px_5px] shadow-black/20 dark:shadow-black/50">
-        <LoadingData />
+          <LoadingData />
         </div>
       </div>
     );
@@ -50,13 +47,13 @@ export default function ProjectsSection() {
                   >
                     <div className="lg:mb-5 mb-4 hover:opacity-90">
                       <Image
-                        loader={myLoader}
-                        src={project.image}
+                        src={project.imageUrl}
                         alt="projectImg"
                         width={500}
                         height={500}
                         className="w-full h-auto"
                         priority={true}
+                        unoptimized={true}
                       />
                     </div>
                   </Link>

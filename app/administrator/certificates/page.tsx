@@ -20,18 +20,11 @@ const getCertificates = async () => {
 export default function page() {
   const { isAuth, axiosJWT, token } = useAuth();
   const { mutate } = useSWRConfig();
-  const myLoader: ImageLoader = ({ src }) => {
-    return `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}uploads/certificates/images/${src}`;
-  };
-
-  const myLoaderImgById: ImageLoader = ({ src }) => {
-    return `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}uploads/certificates/images/${src}`;
-  };
-
   const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isRenderingImage, setIsRenderingImage] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
   const [alert, setAlert] = useState({
     message: "",
@@ -277,25 +270,33 @@ export default function page() {
                       </th>
                       <td className="px-6 py-4">
                         <Link
-                          href={`${process.env.NEXT_PUBLIC_MY_BACKEND_URL}uploads/certificates/images/${certif.image}`}
+                          href={`${certif.imageUrl}`}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
+                          {isRenderingImage && (
+                            <div className="w-[300px] aspect-square hover:opacity-90">
+                              <Loading />
+                            </div>
+                          )}
                           <Image
-                            loader={myLoader}
-                            src={certif.image}
+                            src={certif.imageUrl}
                             alt="certificate"
                             width={500}
                             height={500}
-                            className="w-[200px] h-auto hover:opacity-90"
+                            className={`w-[300px] h-auto hover:opacity-90 ${
+                              !isRenderingImage ? "block" : "hidden"
+                            }`}
                             priority={true}
+                            unoptimized={true}
+                            onLoadingComplete={() => setIsRenderingImage(false)}
                           />
                         </Link>
                       </td>
                       <td className="px-6 py-4">
                         <Link
                           className="hover:text-blue-600"
-                          href={`${process.env.NEXT_PUBLIC_MY_BACKEND_URL}/uploads/certificates/PDF/${certif.pdf}`}
+                          href={`${certif.pdfUrl}`}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -381,6 +382,7 @@ export default function page() {
                     id="image"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     onChange={loadImage}
+                    accept="image/*"
                     required
                   />
                 </div>
@@ -391,7 +393,7 @@ export default function page() {
                       height={100}
                       src={preview}
                       alt="Preview Image"
-                      className="w-[100px] h-auto"
+                      className="w-[300px] h-auto"
                     />
                   </figure>
                 ) : (
@@ -409,6 +411,7 @@ export default function page() {
                     id="pdf"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     onChange={loadPdf}
+                    accept="application/pdf"
                     required
                   />
                 </div>
@@ -481,28 +484,30 @@ export default function page() {
                     type="file"
                     id="image"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    accept="image/*"
                     onChange={loadImage}
                   />
                 </div>
                 {preview ? (
-                  <figure className="image is-128x128 mb-6">
+                  <figure>
                     <Image
-                      width={100}
-                      height={100}
+                      width={300}
+                      height={300}
                       src={preview}
                       alt="Preview Image"
-                      className="w-[150px] h-auto"
                     />
                   </figure>
                 ) : dataById.data?.image && !preview ? (
-                  <figure className="image is-128x128 mb-6">
+                  <figure>
                     <Image
-                      width={100}
-                      height={100}
-                      loader={myLoaderImgById}
-                      src={dataById.data?.image}
+                      width={300}
+                      height={300}
+                      src={dataById.data?.imageUrl}
                       alt="Preview Image"
-                      className="w-[150px] h-auto"
+                      className={`${!isRenderingImage ? "block" : "hidden"}`}
+                      priority={true}
+                      unoptimized={true}
+                      onLoadingComplete={() => setIsRenderingImage(false)}
                     />
                   </figure>
                 ) : (
@@ -520,6 +525,7 @@ export default function page() {
                     id="pdf"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     onChange={loadPdf}
+                    accept="application/pdf"
                   />
                 </div>
               </div>

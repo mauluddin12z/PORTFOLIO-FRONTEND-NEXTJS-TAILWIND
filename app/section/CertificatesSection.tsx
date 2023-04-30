@@ -17,7 +17,7 @@ const getCertificates = async () => {
 
 export default function CertificateSection() {
   const myLoader: ImageLoader = ({ src }) => {
-    return `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}uploads/certificates/images/${src}`;
+    return `${src}`;
   };
   const { data } = useSWR("certificates", getCertificates);
   const renderItems = [];
@@ -43,27 +43,31 @@ export default function CertificateSection() {
           <div className="w-[320px] h-1 rounded-full bg-accent-1 dark:bg-dark-accent-1 shadow-[0px_0px_5px] dark:shadow-[0px_0px_10px] shadow-accent-1 dark:shadow-dark-accent-1 absolute bottom-0"></div>
         </div>
         <div className="lg:flex hidden flex-wrap relative">
-          <div className="border-[12px] border-accent-2 dark:border-dark-accent-2 w-[300px] h-[300px] rounded-full absolute top-50 left-0 shadow-[0px_0px_10px] shadow-accent-2 dark:shadow-dark-accent-2 lg:block hidden"></div>
+          <div className="border-[12px] border-accent-2 dark:border-dark-accent-2 w-[300px] h-[300px] rounded-full absolute top-[10%] left-[20%] shadow-[0px_0px_10px] shadow-accent-2 dark:shadow-dark-accent-2 lg:block hidden"></div>
           <div className="border-[12px] border-accent-1 dark:border-dark-accent-1 w-[100px] h-[100px] rounded-full absolute bottom-[300px] left-[500px] shadow-[0px_0px_10px] shadow-accent-1 dark:shadow-dark-accent-1 lg:block hidden"></div>
-          <div className="border-[12px] border-accent-3 dark:border-dark-accent-3 w-[400px] h-[400px] rounded-full absolute bottom-[600px] left-[600px] shadow-[0px_0px_10px] shadow-accent-3 dark:shadow-dark-accent-3 hidden lg:block"></div>
+          <div className="border-[12px] border-accent-3 dark:border-dark-accent-3 w-[400px] h-[400px] rounded-full absolute bottom-[30%] left-[50%] shadow-[0px_0px_10px] shadow-accent-3 dark:shadow-dark-accent-3 hidden lg:block"></div>
           {data ? (
             data?.map((certif: any, index: number) => (
-              <div key={index} className="lg:w-4/12 w-full h-auto p-4 z-10">
-                <div className="rounded-xl bg-background-2 dark:bg-dark-background-2 flex flex-col shadow-[0px_0px_3px] shadow-[#d6d6d6] dark:shadow-dark-background-1 h-auto w-auto">
+              <div
+                key={index}
+                className="lg:w-4/12 w-full min-h-[280px] h-auto p-4 z-10"
+              >
+                <div className="rounded-xl bg-background-2 dark:bg-dark-background-2 flex flex-col shadow-[0px_0px_3px] shadow-[#d6d6d6] dark:shadow-dark-background-1 h-full w-full">
                   <div className="flex flex-col p-3 justify-center items-center">
                     <div className="flex hover:opacity-90">
                       <Link
-                        href={`${process.env.NEXT_PUBLIC_MY_BACKEND_URL}uploads/certificates/images/${certif.image}`}
+                        href={`${certif.imageUrl}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
                         <Image
-                          loader={myLoader}
-                          src={certif.image}
+                          src={certif.imageUrl}
                           alt="certificate"
                           width={500}
                           height={500}
+                          className="w-full h-auto"
                           priority={true}
+                          unoptimized={true}
                         />
                       </Link>
                     </div>

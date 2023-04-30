@@ -20,18 +20,12 @@ const getProjects = async () => {
 export default function page() {
   const { isAuth, axiosJWT, token } = useAuth();
   const { mutate } = useSWRConfig();
-  const myLoader: ImageLoader = ({ src }) => {
-    return `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}uploads/projects/images/${src}`;
-  };
-
-  const myLoaderImgById: ImageLoader = ({ src }) => {
-    return `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}uploads/projects/images/${src}`;
-  };
 
   const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isRenderingImage, setIsRenderingImage] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
   const [selectedId, setSelectedId] = useState<number>();
   const [alert, setAlert] = useState({
@@ -203,6 +197,7 @@ export default function page() {
   useEffect(() => {
     if (dataById.data) {
       setProjectName(dataById.data.project_name);
+      setProjectLink(dataById.data.project_link);
     }
   }, [dataById.data]);
 
@@ -285,18 +280,26 @@ export default function page() {
                       </td>
                       <td className="px-6 py-4">
                         <Link
-                          href={`${process.env.NEXT_PUBLIC_MY_BACKEND_URL}uploads/projects/images/${project.image}`}
+                          href={project.imageUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
+                          {isRenderingImage && (
+                            <div className="w-[200px] aspect-square hover:opacity-90">
+                              <Loading />
+                            </div>
+                          )}
                           <Image
-                            loader={myLoader}
-                            src={project.image}
-                            alt="projectImg"
+                            src={project.imageUrl}
+                            alt="skillImg"
                             width={500}
                             height={500}
-                            className="w-[200px] h-auto hover:opacity-90"
+                            className={`w-[200px] h-auto hover:opacity-90 ${
+                              !isRenderingImage ? "block" : "hidden"
+                            }`}
                             priority={true}
+                            unoptimized={true}
+                            onLoadingComplete={() => setIsRenderingImage(false)}
                           />
                         </Link>
                       </td>
@@ -375,7 +378,7 @@ export default function page() {
                     Project Link
                   </label>
                   <input
-                    type="text"
+                    type="url"
                     id="projectLink"
                     className="Sbg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Project Link"
@@ -395,17 +398,18 @@ export default function page() {
                     id="image"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     onChange={loadImage}
+                    accept="image/*"
                     required
                   />
                 </div>
                 {preview ? (
-                  <figure className="image is-128x128 mb-6">
+                  <figure>
                     <Image
                       width={100}
                       height={100}
                       src={preview}
                       alt="Preview Image"
-                      className="w-[100px] h-auto"
+                      className="w-[200px] h-auto"
                     />
                   </figure>
                 ) : (
@@ -471,6 +475,22 @@ export default function page() {
                 </div>
                 <div className="mb-6">
                   <label
+                    htmlFor="projectLink"
+                    className="w-full block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Project Link
+                  </label>
+                  <input
+                    type="url"
+                    id="projectLink"
+                    className="Sbg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Project Link"
+                    value={projectLink}
+                    onChange={(e) => setProjectLink(e.target.value)}
+                  />
+                </div>
+                <div className="mb-6">
+                  <label
                     htmlFor="image"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
@@ -481,27 +501,37 @@ export default function page() {
                     id="image"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     onChange={loadImage}
+                    accept="image/*"
                   />
                 </div>
                 {preview ? (
-                  <figure className="image is-128x128 mb-6">
+                  <figure>
                     <Image
                       width={100}
                       height={100}
                       src={preview}
                       alt="Preview Image"
-                      className="w-[150px] h-auto"
+                      className="w-[200px] h-auto"
                     />
                   </figure>
                 ) : dataById.data?.image && !preview ? (
-                  <figure className="image is-128x128 mb-6">
+                  <figure>
+                    {isRenderingImage && (
+                      <div className="w-[100px] aspect-square hover:opacity-90">
+                        <Loading />
+                      </div>
+                    )}
                     <Image
                       width={100}
                       height={100}
-                      loader={myLoaderImgById}
-                      src={dataById.data?.image}
+                      src={dataById.data?.imageUrl}
                       alt="Preview Image"
-                      className="w-[150px] h-auto"
+                      className={`w-[200px] h-auto hover:opacity-90 ${
+                        !isRenderingImage ? "block" : "hidden"
+                      }`}
+                      priority={true}
+                      unoptimized={true}
+                      onLoadingComplete={() => setIsRenderingImage(false)}
                     />
                   </figure>
                 ) : (

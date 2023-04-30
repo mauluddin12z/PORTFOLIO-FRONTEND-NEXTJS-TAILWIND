@@ -10,9 +10,9 @@ import Modal from "../components/modal";
 import Alerts from "../components/alerts";
 import Link from "next/link";
 
-const getSkills = async () => {
+const getProjects = async () => {
   const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}skills`
+    `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}projects`
   );
   return res.data;
 };
@@ -20,18 +20,12 @@ const getSkills = async () => {
 export default function page() {
   const { isAuth, axiosJWT, token } = useAuth();
   const { mutate } = useSWRConfig();
-  const myLoader: ImageLoader = ({ src }) => {
-    return `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}uploads/skills/images/${src}`;
-  };
-
-  const myLoaderImgById: ImageLoader = ({ src }) => {
-    return `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}uploads/skills/images/${src}`;
-  };
 
   const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isRenderingImage, setIsRenderingImage] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
   const [selectedId, setSelectedId] = useState<number>();
   const [alert, setAlert] = useState({
@@ -51,12 +45,13 @@ export default function page() {
     }
   };
 
-  const [skill, setSkill] = useState("");
+  const [projectName, setProjectName] = useState("");
+  const [projectLink, setProjectLink] = useState("");
   const [image, setImage] = useState("");
 
-  const getSkillById = async (id: any) => {
+  const getProjectById = async (id: any) => {
     const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}skills/${id}`
+      `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}projects/${id}`
     );
     return res.data;
   };
@@ -64,12 +59,13 @@ export default function page() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("skill", skill);
+    formData.append("project_name", projectName);
+    formData.append("project_link", projectLink);
     formData.append("image", image);
     setIsLoading(true);
     try {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}skills`,
+      await axiosJWT.post(
+        `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}projects`,
         formData,
         {
           headers: {
@@ -105,18 +101,19 @@ export default function page() {
     }
 
     setIsLoading(false);
-    mutate("Skills");
+    mutate("Projects");
   };
 
   const handleUpdate = async (e: any) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("skill", skill);
+    formData.append("project_name", projectName);
+    formData.append("project_link", projectLink);
     formData.append("image", image);
     setIsLoading(true);
     try {
-      await axios.patch(
-        `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}skills/${selectedId}`,
+      await axiosJWT.patch(
+        `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}projects/${selectedId}`,
         formData,
         {
           headers: {
@@ -151,14 +148,14 @@ export default function page() {
       });
     }
     setIsLoading(false);
-    mutate("Skills");
+    mutate("Projects");
   };
 
   const handleDelete = async (selectedId: number) => {
     setIsLoading(true);
     try {
-      await axios.delete(
-        `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}skills/${selectedId}`,
+      await axiosJWT.delete(
+        `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}projects/${selectedId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -190,16 +187,17 @@ export default function page() {
       });
     }
     setIsLoading(false);
-    mutate("Skills");
+    mutate("Projects");
   };
-  const { data } = useSWR("Skills", getSkills);
-  const dataById = useSWR(selectedId ? ["SkillById", selectedId] : null, () =>
-    getSkillById(selectedId)
+  const { data } = useSWR("Projects", getProjects);
+  const dataById = useSWR(selectedId ? ["ProjectById", selectedId] : null, () =>
+    getProjectById(selectedId)
   );
 
   useEffect(() => {
     if (dataById.data) {
-      setSkill(dataById.data.skill);
+      setProjectName(dataById.data.project_name);
+      setProjectLink(dataById.data.project_link);
     }
   }, [dataById.data]);
 
@@ -214,7 +212,7 @@ export default function page() {
       <Sidebar>
         <div className="flex flex-col">
           <div className="font-bold text-[28px] text-accent-1 dark:text-dark-accent-1 mb-14">
-            Skills
+            Projects
           </div>
           <div className="flex flex-col mb-2">
             <div className="w-full">
@@ -241,7 +239,10 @@ export default function page() {
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-accent-4 dark:text-gray-100">
                 <tr>
                   <th scope="col" className="px-6 py-3">
-                    Skill
+                    Project
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Project link
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Image
@@ -253,7 +254,7 @@ export default function page() {
               </thead>
               <tbody>
                 {data &&
-                  data?.map((skill: any, index: any) => (
+                  data?.map((project: any, index: any) => (
                     <tr
                       key={index}
                       className="bg-white border-b dark:bg-dark-background-1 hover:dark:bg-gray-900 dark:border-dark-background-2 transition-all duration-100"
@@ -262,22 +263,43 @@ export default function page() {
                         scope="row"
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        {skill.skill}
+                        {project.project_name}
                       </th>
-                      <td className="px-6 py-4">
+                      <td
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
                         <Link
-                          href={`${process.env.NEXT_PUBLIC_MY_BACKEND_URL}uploads/skills/images/${skill.image}`}
+                          className="hover:text-blue-600"
+                          href={project.project_link}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
+                          {project.project_link}
+                        </Link>
+                      </td>
+                      <td className="px-6 py-4">
+                        <Link
+                          href={project.imageUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {isRenderingImage && (
+                            <div className="w-[200px] aspect-square hover:opacity-90">
+                              <Loading />
+                            </div>
+                          )}
                           <Image
-                            loader={myLoader}
-                            src={skill.image}
+                            src={project.imageUrl}
                             alt="skillImg"
                             width={500}
                             height={500}
-                            className="w-[100px] h-auto hover:opacity-90"
+                            className={`w-[200px] h-auto hover:opacity-90 ${
+                              !isRenderingImage ? "block" : "hidden"
+                            }`}
                             priority={true}
+                            unoptimized={true}
+                            onLoadingComplete={() => setIsRenderingImage(false)}
                           />
                         </Link>
                       </td>
@@ -286,7 +308,7 @@ export default function page() {
                           <button
                             type="button"
                             onClick={() => {
-                              setSelectedId(skill.id);
+                              setSelectedId(project.id);
                               setIsModalUpdateOpen(true);
                             }}
                             className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full lg:text-sm text-[10px] px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -296,7 +318,7 @@ export default function page() {
                           <button
                             type="button"
                             onClick={() => {
-                              setSelectedId(skill.id);
+                              setSelectedId(project.id);
                               setIsModalDeleteOpen(true);
                             }}
                             className="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
@@ -334,17 +356,33 @@ export default function page() {
               <div className="w-10/12 py-10">
                 <div className="mb-6">
                   <label
-                    htmlFor="skill"
+                    htmlFor="project"
                     className="w-full block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Skill
+                    Project
                   </label>
                   <input
                     type="text"
-                    id="skill"
+                    id="project"
                     className="Sbg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Skill"
-                    onChange={(e) => setSkill(e.target.value)}
+                    placeholder="Project"
+                    onChange={(e) => setProjectName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="mb-6">
+                  <label
+                    htmlFor="projectLink"
+                    className="w-full block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Project Link
+                  </label>
+                  <input
+                    type="url"
+                    id="projectLink"
+                    className="Sbg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Project Link"
+                    onChange={(e) => setProjectLink(e.target.value)}
                     required
                   />
                 </div>
@@ -360,17 +398,18 @@ export default function page() {
                     id="image"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     onChange={loadImage}
+                    accept="image/*"
                     required
                   />
                 </div>
                 {preview ? (
-                  <figure className="image is-128x128 mb-6">
+                  <figure>
                     <Image
                       width={100}
                       height={100}
                       src={preview}
                       alt="Preview Image"
-                      className="w-[100px] h-auto"
+                      className="w-[200px] h-auto"
                     />
                   </figure>
                 ) : (
@@ -420,18 +459,34 @@ export default function page() {
               <div className="w-10/12 py-10">
                 <div className="mb-6">
                   <label
-                    htmlFor="skill"
+                    htmlFor="project"
                     className="w-full block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Skill
+                    Project
                   </label>
                   <input
                     type="text"
-                    id="skill"
+                    id="project"
                     className="Sbg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="skill"
-                    value={skill}
-                    onChange={(e) => setSkill(e.target.value)}
+                    placeholder="project"
+                    value={projectName}
+                    onChange={(e) => setProjectName(e.target.value)}
+                  />
+                </div>
+                <div className="mb-6">
+                  <label
+                    htmlFor="projectLink"
+                    className="w-full block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Project Link
+                  </label>
+                  <input
+                    type="url"
+                    id="projectLink"
+                    className="Sbg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Project Link"
+                    value={projectLink}
+                    onChange={(e) => setProjectLink(e.target.value)}
                   />
                 </div>
                 <div className="mb-6">
@@ -446,27 +501,37 @@ export default function page() {
                     id="image"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     onChange={loadImage}
+                    accept="image/*"
                   />
                 </div>
                 {preview ? (
-                  <figure className="image is-128x128 mb-6">
+                  <figure>
                     <Image
                       width={100}
                       height={100}
                       src={preview}
                       alt="Preview Image"
-                      className="w-[150px] h-auto"
+                      className="w-[200px] h-auto"
                     />
                   </figure>
                 ) : dataById.data?.image && !preview ? (
-                  <figure className="image is-128x128 mb-6">
+                  <figure>
+                    {isRenderingImage && (
+                      <div className="w-[100px] aspect-square hover:opacity-90">
+                        <Loading />
+                      </div>
+                    )}
                     <Image
                       width={100}
                       height={100}
-                      loader={myLoaderImgById}
-                      src={dataById.data?.image}
+                      src={dataById.data?.imageUrl}
                       alt="Preview Image"
-                      className="w-[150px] h-auto"
+                      className={`w-[200px] h-auto hover:opacity-90 ${
+                        !isRenderingImage ? "block" : "hidden"
+                      }`}
+                      priority={true}
+                      unoptimized={true}
+                      onLoadingComplete={() => setIsRenderingImage(false)}
                     />
                   </figure>
                 ) : (

@@ -14,9 +14,6 @@ const getCertificates = async () => {
 };
 
 export default function CertificateSection() {
-  const myLoader: ImageLoader = ({ src }) => {
-    return `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}uploads/certificates/images/${src}`;
-  };
   const { data } = useSWR("certificates", getCertificates);
 
   const dataLength = data ? data.length - 1 : 0;
@@ -42,13 +39,14 @@ export default function CertificateSection() {
   const renderItems = [];
   for (let i = 0; i < 9; i++) {
     renderItems.push(
-      <div key={i} className="w-96 h-72 lg:p-4 p-5">
-        <div className="w-full h-full flex flex-col rounded-lg bg-background-2 dark:bg-dark-background-2 shadow-[0px_0px_3px] shadow-[#d6d6d6] dark:shadow-dark-background-1 overflow-hidden p-2 justify-between">
+      <div key={i} className="w-96 h-full p-3">
+        <div className="h-full w-full flex flex-col rounded-lg bg-background-2 dark:bg-dark-background-2 shadow-[0px_0px_3px] shadow-[#d6d6d6] dark:shadow-dark-background-1 overflow-hidden p-2 justify-between">
           <Loading />
         </div>
       </div>
     );
   }
+
   return (
     <>
       <div className="relative flex justify-center items-center h-fit w-fit">
@@ -66,18 +64,18 @@ export default function CertificateSection() {
                   <div className="h-full w-auto flex flex-col rounded-lg bg-background-2 dark:bg-dark-background-2 shadow-[0px_0px_3px] shadow-[#d6d6d6] dark:shadow-dark-background-1 overflow-hidden p-2 justify-between">
                     <div className="flex hover:opacity-90">
                       <Link
-                        href={`${process.env.NEXT_PUBLIC_MY_BACKEND_URL}uploads/certificates/images/${img.image}`}
+                        href={`${img.imageUrl}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
                         <Image
-                          src={img.image}
-                          loader={myLoader}
+                          src={img.imageUrl}
                           width={500}
                           height={500}
                           alt="test"
                           className="w-full h-auto"
                           priority={true}
+                          unoptimized={true}
                         />
                       </Link>
                     </div>
