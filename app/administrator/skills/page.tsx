@@ -10,9 +10,9 @@ import Modal from "../components/modal";
 import Alerts from "../components/alerts";
 import Link from "next/link";
 
-const getProjects = async () => {
+const getSkills = async () => {
   const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}projects`
+    `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}skills`
   );
   return res.data;
 };
@@ -45,13 +45,12 @@ export default function page() {
     }
   };
 
-  const [projectName, setProjectName] = useState("");
-  const [projectLink, setProjectLink] = useState("");
+  const [skill, setSkill] = useState("");
   const [image, setImage] = useState("");
 
-  const getProjectById = async (id: any) => {
+  const getSkillById = async (id: any) => {
     const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}projects/${id}`
+      `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}skills/${id}`
     );
     return res.data;
   };
@@ -59,13 +58,12 @@ export default function page() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("project_name", projectName);
-    formData.append("project_link", projectLink);
+    formData.append("skill", skill);
     formData.append("image", image);
     setIsLoading(true);
     try {
       await axiosJWT.post(
-        `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}projects`,
+        `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}skills`,
         formData,
         {
           headers: {
@@ -101,19 +99,18 @@ export default function page() {
     }
 
     setIsLoading(false);
-    mutate("Projects");
+    mutate("Skills");
   };
 
   const handleUpdate = async (e: any) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("project_name", projectName);
-    formData.append("project_link", projectLink);
+    formData.append("skill", skill);
     formData.append("image", image);
     setIsLoading(true);
     try {
       await axiosJWT.patch(
-        `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}projects/${selectedId}`,
+        `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}skills/${selectedId}`,
         formData,
         {
           headers: {
@@ -148,14 +145,14 @@ export default function page() {
       });
     }
     setIsLoading(false);
-    mutate("Projects");
+    mutate("Skills");
   };
 
   const handleDelete = async (selectedId: number) => {
     setIsLoading(true);
     try {
       await axiosJWT.delete(
-        `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}projects/${selectedId}`,
+        `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}skills/${selectedId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -187,17 +184,16 @@ export default function page() {
       });
     }
     setIsLoading(false);
-    mutate("Projects");
+    mutate("Skills");
   };
-  const { data } = useSWR("Projects", getProjects);
-  const dataById = useSWR(selectedId ? ["ProjectById", selectedId] : null, () =>
-    getProjectById(selectedId)
+  const { data } = useSWR("Skills", getSkills);
+  const dataById = useSWR(selectedId ? ["SkillById", selectedId] : null, () =>
+    getSkillById(selectedId)
   );
 
   useEffect(() => {
     if (dataById.data) {
-      setProjectName(dataById.data.project_name);
-      setProjectLink(dataById.data.project_link);
+      setSkill(dataById.data.skill);
     }
   }, [dataById.data]);
 
@@ -212,7 +208,7 @@ export default function page() {
       <Sidebar>
         <div className="flex flex-col">
           <div className="font-bold text-[28px] text-accent-1 dark:text-dark-accent-1 mb-14">
-            Projects
+            Skills
           </div>
           <div className="flex flex-col mb-2">
             <div className="w-full">
@@ -239,10 +235,7 @@ export default function page() {
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-accent-4 dark:text-gray-100">
                 <tr>
                   <th scope="col" className="px-6 py-3">
-                    Project
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Project link
+                    Skill
                   </th>
                   <th scope="col" className="px-6 py-3">
                     Image
@@ -254,7 +247,7 @@ export default function page() {
               </thead>
               <tbody>
                 {data &&
-                  data?.map((project: any, index: any) => (
+                  data?.map((skill: any, index: any) => (
                     <tr
                       key={index}
                       className="bg-white border-b dark:bg-dark-background-1 hover:dark:bg-gray-900 dark:border-dark-background-2 transition-all duration-100"
@@ -263,38 +256,25 @@ export default function page() {
                         scope="row"
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        {project.project_name}
+                        {skill.skill}
                       </th>
-                      <td
-                        scope="row"
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        <Link
-                          className="hover:text-blue-600"
-                          href={project.project_link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {project.project_link}
-                        </Link>
-                      </td>
                       <td className="px-6 py-4">
                         <Link
-                          href={project.imageUrl}
+                          href={skill.imageUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
                           {isRenderingImage && (
-                            <div className="w-[200px] aspect-square hover:opacity-90">
+                            <div className="w-[100px] aspect-square hover:opacity-90">
                               <Loading />
                             </div>
                           )}
                           <Image
-                            src={project.imageUrl}
+                            src={skill.imageUrl}
                             alt="skillImg"
                             width={500}
                             height={500}
-                            className={`w-[200px] h-auto hover:opacity-90 ${
+                            className={`w-[100px] h-auto hover:opacity-90 ${
                               !isRenderingImage ? "block" : "hidden"
                             }`}
                             priority={true}
@@ -308,7 +288,7 @@ export default function page() {
                           <button
                             type="button"
                             onClick={() => {
-                              setSelectedId(project.id);
+                              setSelectedId(skill.id);
                               setIsModalUpdateOpen(true);
                             }}
                             className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full lg:text-sm text-[10px] px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -318,7 +298,7 @@ export default function page() {
                           <button
                             type="button"
                             onClick={() => {
-                              setSelectedId(project.id);
+                              setSelectedId(skill.id);
                               setIsModalDeleteOpen(true);
                             }}
                             className="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
@@ -356,33 +336,17 @@ export default function page() {
               <div className="w-10/12 py-10">
                 <div className="mb-6">
                   <label
-                    htmlFor="project"
+                    htmlFor="skill"
                     className="w-full block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Project
+                    Skill
                   </label>
                   <input
                     type="text"
-                    id="project"
+                    id="skill"
                     className="Sbg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Project"
-                    onChange={(e) => setProjectName(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="mb-6">
-                  <label
-                    htmlFor="projectLink"
-                    className="w-full block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Project Link
-                  </label>
-                  <input
-                    type="url"
-                    id="projectLink"
-                    className="Sbg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Project Link"
-                    onChange={(e) => setProjectLink(e.target.value)}
+                    placeholder="Skill"
+                    onChange={(e) => setSkill(e.target.value)}
                     required
                   />
                 </div>
@@ -409,7 +373,7 @@ export default function page() {
                       height={100}
                       src={preview}
                       alt="Preview Image"
-                      className="w-[200px] h-auto"
+                      className="w-[100px] h-auto"
                     />
                   </figure>
                 ) : (
@@ -459,34 +423,18 @@ export default function page() {
               <div className="w-10/12 py-10">
                 <div className="mb-6">
                   <label
-                    htmlFor="project"
+                    htmlFor="skill"
                     className="w-full block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Project
+                    Skill
                   </label>
                   <input
                     type="text"
-                    id="project"
+                    id="skill"
                     className="Sbg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="project"
-                    value={projectName}
-                    onChange={(e) => setProjectName(e.target.value)}
-                  />
-                </div>
-                <div className="mb-6">
-                  <label
-                    htmlFor="projectLink"
-                    className="w-full block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Project Link
-                  </label>
-                  <input
-                    type="url"
-                    id="projectLink"
-                    className="Sbg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Project Link"
-                    value={projectLink}
-                    onChange={(e) => setProjectLink(e.target.value)}
+                    placeholder="skill"
+                    value={skill}
+                    onChange={(e) => setSkill(e.target.value)}
                   />
                 </div>
                 <div className="mb-6">
@@ -511,7 +459,7 @@ export default function page() {
                       height={100}
                       src={preview}
                       alt="Preview Image"
-                      className="w-[200px] h-auto"
+                      className="w-[150px] h-auto"
                     />
                   </figure>
                 ) : dataById.data?.image && !preview ? (
@@ -526,10 +474,7 @@ export default function page() {
                       height={100}
                       src={dataById.data?.imageUrl}
                       alt="Preview Image"
-                      className={`w-[200px] h-auto hover:opacity-90 ${
-                        !isRenderingImage ? "block" : "hidden"
-                      }`}
-                      priority={true}
+                      className="w-[150px] h-auto"
                       unoptimized={true}
                       onLoadingComplete={() => setIsRenderingImage(false)}
                     />
