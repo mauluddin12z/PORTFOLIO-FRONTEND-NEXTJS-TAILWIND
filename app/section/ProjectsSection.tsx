@@ -41,7 +41,7 @@ export default function ProjectsSection() {
               <div key={index} className="lg:w-6/12 w-full h-full p-6">
                 <div className="lg:p-6 p-5 rounded-lg bg-background-1 dark:bg-dark-background-1 flex flex-col justify-center shadow-[0px_0px_5px] shadow-black/20 dark:shadow-black/50">
                   <Link
-                    href={`${process.env.NEXT_PUBLIC_MY_BACKEND_URL}uploads/projects/images/${project.image}`}
+                    href={`${project.imageUrl}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

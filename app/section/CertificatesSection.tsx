@@ -56,7 +56,7 @@ export default function CertificateSection() {
                   <div className="flex flex-col p-3 justify-center items-center">
                     <div className="flex hover:opacity-90">
                       <Link
-                        href={`${certif.imageUrl}`}
+                        href={`${certif.pdfUrl}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
