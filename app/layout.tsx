@@ -16,7 +16,7 @@ export default function RootLayout({
       <head>
         <link
           rel="shortcut icon"
-          href="/images/favicon.ico?v=2"
+          href={`/images/favicon.ico?v=${Math.random()}`}
           type="image/x-icon"
           sizes="any"
         />
