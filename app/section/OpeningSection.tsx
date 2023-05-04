@@ -43,7 +43,7 @@ export default function OpeningSection() {
                 Hidayat Mauluddin
               </div>
             </div>
-            <div className="text-[14px] text-accent-4 dark:text-dark-accent-4 z-20 lg:w-10/12 w-full mb-10">
+            <div className="text-[16px] text-accent-4 dark:text-dark-accent-4 z-20 lg:w-10/12 w-full mb-10">
               Saya seorang Fullstack Web Developer dengan pengalaman dalam
               membangun aplikasi web yang kompleks dan dinamis, menggunakan
               teknologi-teknologi terkini dalam industri seperti HTML, CSS,

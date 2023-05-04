@@ -52,7 +52,7 @@ export default function CertificateSection() {
                 key={index}
                 className="lg:w-4/12 w-full min-h-[280px] h-auto p-4 z-10"
               >
-                <div className="rounded-xl bg-background-2 dark:bg-dark-background-2 flex flex-col shadow-[0px_0px_3px] shadow-[#d6d6d6] dark:shadow-dark-background-1 h-full w-full">
+                <div className="rounded-xl bg-background-2 dark:bg-dark-background-2 flex justify-center items-center flex-col shadow-[0px_0px_3px] shadow-[#d6d6d6] dark:shadow-dark-background-1 h-full w-full">
                   <div className="flex flex-col p-3 justify-center items-center">
                     <div className="flex hover:opacity-90">
                       <Link

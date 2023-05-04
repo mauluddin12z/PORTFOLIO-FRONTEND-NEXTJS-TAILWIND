@@ -25,20 +25,20 @@ export default function AboutSection() {
                 Education
               </div>
               <div className="mb-5">
+                <div className="font-semibold text-accent-1 dark:text-dark-accent-1 text-[24px]">
+                  Universitas Sriwijaya Fakultas Ilmu Komputer (2018 - 2022)
+                </div>
+                <div className="text-accent-4 dark:text-dark-accent-4 text-[16px] flex flex-col">
+                  <span>Jurusan: Sistem Informasi</span>
+                  <span>IPK: 3.66</span>
+                </div>
+              </div>
+              <div className="mb-5">
                 <div className="font-semibold text-accent-1 dark:text-dark-accent-1 text-[16px]">
                   SMA Negeri 3 Palembang (2015 - 2018)
                 </div>
                 <div className=" text-accent-4 dark:text-dark-accent-4 text-[16px]">
                   <span>Jurusan: IPA</span>
-                </div>
-              </div>
-              <div className="mb-5">
-                <div className="font-semibold text-accent-1 dark:text-dark-accent-1 text-[16px]">
-                  Universitas Sriwijaya Fakultas Ilmu Komputer (2018 - 2022)
-                </div>
-                <div className="text-accent-4 dark:text-dark-accent-4 text-[14px] flex flex-col">
-                  <span>Jurusan: Sistem Informasi</span>
-                  <span>IPK: 3.66</span>
                 </div>
               </div>
             </div>
