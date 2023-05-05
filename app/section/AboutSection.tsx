@@ -21,11 +21,11 @@ export default function AboutSection() {
               HTML, CSS, JavaScript, Node.js, dan React.
             </div>
             <div className="flex flex-col">
-              <div className="font-bold text-accent-1 dark:text-dark-accent-1 text-[24px]">
+              <div className="font-bold text-accent-1 dark:text-dark-accent-1 text-[24px] mb-2">
                 Education
               </div>
               <div className="mb-5">
-                <div className="font-semibold text-accent-1 dark:text-dark-accent-1 text-[24px]">
+                <div className="font-semibold text-accent-1 dark:text-dark-accent-1 text-[16px]">
                   Universitas Sriwijaya Fakultas Ilmu Komputer (2018 - 2022)
                 </div>
                 <div className="text-accent-4 dark:text-dark-accent-4 text-[16px] flex flex-col">
