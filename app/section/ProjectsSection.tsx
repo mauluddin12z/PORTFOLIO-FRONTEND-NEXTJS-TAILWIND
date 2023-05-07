@@ -50,7 +50,7 @@ export default function ProjectsSection() {
                         src={project.imageUrl}
                         alt="projectImg"
                         width={500}
-                        height={500}
+                        height={300}
                         className="w-full h-auto"
                         priority={true}
                         unoptimized={true}
