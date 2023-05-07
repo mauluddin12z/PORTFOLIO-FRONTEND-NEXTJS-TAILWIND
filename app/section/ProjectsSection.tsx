@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import useSWR from "swr";
 import axios from "axios";
 import Image, { ImageLoader } from "next/image";
@@ -16,6 +16,7 @@ const getProjects = async () => {
 
 export default function ProjectsSection() {
   const { data } = useSWR("projects", getProjects);
+  const [isRenderingImage, setIsRenderingImage] = useState(true);
   const renderItems = [];
   for (let i = 0; i < 2; i++) {
     renderItems.push(
@@ -46,14 +47,22 @@ export default function ProjectsSection() {
                     rel="noopener noreferrer"
                   >
                     <div className="lg:mb-5 mb-4 hover:opacity-90">
+                      {isRenderingImage && (
+                        <div className="w-[400px] h-[300px] hover:opacity-90">
+                          <LoadingData />
+                        </div>
+                      )}
                       <Image
                         src={project.imageUrl}
                         alt="projectImg"
                         width={500}
                         height={300}
-                        className="w-full h-auto"
+                        className={`w-full h-auto ${
+                          !isRenderingImage ? "block" : "hidden"
+                        }`}
                         priority={true}
                         unoptimized={true}
+                        onLoad={() => setIsRenderingImage(false)}
                       />
                     </div>
                   </Link>

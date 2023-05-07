@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import useSWR from "swr";
 import axios from "axios";
 import Image, { ImageLoader } from "next/image";
@@ -16,14 +16,12 @@ const getCertificates = async () => {
 };
 
 export default function CertificateSection() {
-  const myLoader: ImageLoader = ({ src }) => {
-    return `${src}`;
-  };
   const { data } = useSWR("certificates", getCertificates);
+  const [isRenderingImage, setIsRenderingImage] = useState(true);
   const renderItems = [];
   for (let i = 0; i < 9; i++) {
     renderItems.push(
-      <div key={i} className="lg:w-4/12 w-full h-[350px] p-4 z-10 rounded-lg">
+      <div key={i} className="lg:w-4/12 w-full h-[280px] p-4 z-10 rounded-lg">
         <div className="rounded-lg bg-background-2 dark:bg-dark-background-2 flex flex-col shadow-[0px_0px_3px] shadow-background-1 dark:shadow-dark-background-1 h-full w-full overflow-hidden">
           <LoadingData />
         </div>
@@ -60,14 +58,22 @@ export default function CertificateSection() {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
+                        {isRenderingImage && (
+                          <div className="w-[350px] h-[280px] hover:opacity-90">
+                            <LoadingData />
+                          </div>
+                        )}
                         <Image
                           src={certif.imageUrl}
                           alt="certificate"
                           width={500}
                           height={500}
-                          className="w-full h-auto"
+                          className={`w-full h-auto ${
+                            !isRenderingImage ? "block" : "hidden"
+                          }`}
                           priority={true}
                           unoptimized={true}
+                          onLoad={() => setIsRenderingImage(false)}
                         />
                       </Link>
                     </div>

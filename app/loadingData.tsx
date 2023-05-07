@@ -2,7 +2,7 @@ import React from "react";
 
 export default function loadingData() {
   return (
-    <div className="justify-center w-full h-full flex items-center dark:bg-dark-background-1 bg-background-1 dark:border-dark-background-2 border-background-2">
+    <div className="justify-center w-full h-full flex items-center">
       <div className="flex items-center justify-center w-6/12 h-3/6">
         <div role="status" className="flex justify-center items-center">
           <svg

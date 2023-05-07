@@ -1,6 +1,6 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Image, { ImageLoader } from "next/image";
-import Link from "next/link";
 import _3lines from "@/public/images/_3lines.svg";
 import useSWR from "swr";
 import axios from "axios";
@@ -15,6 +15,7 @@ const getSkills = async () => {
 
 export default function SkillsSection() {
   const { data } = useSWR("skills", getSkills);
+  const [isRenderingImage, setIsRenderingImage] = useState(true);
   const renderItems = [];
   for (let i = 0; i < 4; i++) {
     renderItems.push(
@@ -40,14 +41,22 @@ export default function SkillsSection() {
               data?.map((skill: any, index: any) => (
                 <div key={index} className="w-4/12 lg:w-2/12 aspect-square p-1">
                   <div className="bg-background-1/50 dark:bg-dark-background-1/50 rounded-2xl w-full h-full flex justify-center items-center">
+                    {isRenderingImage && (
+                      <div className="w-[400px] h-[300px] hover:opacity-90">
+                        <LoadingData />
+                      </div>
+                    )}
                     <Image
                       src={skill.imageUrl}
                       width={500}
                       height={500}
-                      className="full h-auto rounded-2xl my-animate-bounce p-5"
                       alt="skills"
-                      unoptimized={true}
+                      className={`w-full h-auto rounded-2xl my-animate-bounce p-5 ${
+                        !isRenderingImage ? "block" : "hidden"
+                      }`}
                       priority={true}
+                      unoptimized={true}
+                      onLoad={() => setIsRenderingImage(false)}
                     />
                   </div>
                 </div>
