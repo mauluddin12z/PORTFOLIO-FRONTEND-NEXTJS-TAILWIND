@@ -21,8 +21,8 @@ export default function CertificateSection() {
   const renderItems = [];
   for (let i = 0; i < 9; i++) {
     renderItems.push(
-      <div key={i} className="lg:w-4/12 w-full h-[280px] p-4 z-10 rounded-lg">
-        <div className="rounded-lg bg-background-2 dark:bg-dark-background-2 flex flex-col shadow-[0px_0px_3px] shadow-background-1 dark:shadow-dark-background-1 h-full w-full overflow-hidden">
+      <div key={i} className="lg:w-4/12 w-full h-[280px] p-4 z-10">
+        <div className="bg-background-2 dark:bg-dark-background-2 flex flex-col shadow-[0px_0px_3px] shadow-background-1 dark:shadow-dark-background-1 h-full w-full overflow-hidden">
           <LoadingData />
         </div>
       </div>

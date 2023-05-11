@@ -46,7 +46,7 @@ export default function ProjectsSection() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <div className="lg:mb-5 mb-4 hover:opacity-90">
+                    <div className="lg:mb-5 mb-4 hover:opacity-90 flex justify-center items-center">
                       {isRenderingImage && (
                         <div className="w-[400px] h-[300px] hover:opacity-90">
                           <LoadingData />
