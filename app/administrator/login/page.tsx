@@ -5,6 +5,8 @@ import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import useAuth from "../useAuth";
+import LoadingForBtn from "@/app/loadingForBtn";
+
 
 export default function page() {
   const router = useRouter();
@@ -21,6 +23,7 @@ export default function page() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const timeoutRef = useRef<Timeout | null>(null);
   const formData = new FormData();
@@ -28,6 +31,7 @@ export default function page() {
   formData.append("password", password);
   const handleLogin = async (e: any) => {
     e.preventDefault();
+    setIsLoading(true)
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}login`,
@@ -107,8 +111,9 @@ export default function page() {
                 <button
                   type="submit"
                   className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  disabled={isLoading}
                 >
-                  Sign in
+                  {isLoading ? <LoadingForBtn /> : "Sign In"}
                 </button>
               </form>
             </div>
