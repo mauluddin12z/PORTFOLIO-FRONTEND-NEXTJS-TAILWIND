@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import axios from "axios";
 import Image, { ImageLoader } from "next/image";
@@ -19,22 +19,28 @@ export default function CertificateSection() {
   const dataLength = data ? data.length - 1 : 0;
 
   const [index, setIndex] = useState(0);
+
   const nextSlide = () => {
-    clearTimeout(autoSlider);
-    setIndex(index == dataLength ? 0 : index + 1);
-  };
-  const prevSlide = () => {
-    clearTimeout(autoSlider);
-    setIndex(index == 0 ? dataLength : index - 1);
+    clearTimeout(autoSlideTimeout.current);
+    setIndex((index) => (index === dataLength ? 0 : index + 1));
   };
 
-  const autoSlider = setTimeout(() => {
-    nextSlide();
-  }, 5000);
+  const prevSlide = () => {
+    clearTimeout(autoSlideTimeout.current);
+    setIndex((index) => (index === 0 ? dataLength : index - 1));
+  };
+
+  const autoSlideTimeout = useRef<any>(null);
 
   useEffect(() => {
-    clearTimeout(autoSlider);
-  }, []);
+    autoSlideTimeout.current = setTimeout(() => {
+      nextSlide();
+    }, 5000);
+
+    return () => {
+      clearTimeout(autoSlideTimeout.current);
+    };
+  }, [index, nextSlide]);
 
   const renderItems = [];
   for (let i = 0; i < 9; i++) {
@@ -60,7 +66,10 @@ export default function CertificateSection() {
           >
             {data ? (
               data?.map((img: any, index: any) => (
-                <div key={index} className="w-96 h-auto min-h-[240px] lg:p-4 p-5">
+                <div
+                  key={index}
+                  className="w-96 h-auto min-h-[240px] lg:p-4 p-5"
+                >
                   <div className="h-full min-h-[240px] w-auto flex flex-col rounded-lg bg-background-2 dark:bg-dark-background-2 shadow-[0px_0px_3px] shadow-[#d6d6d6] dark:shadow-dark-background-1 overflow-hidden p-2 justify-between">
                     <div className="flex hover:opacity-90">
                       <Link

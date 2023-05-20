@@ -30,19 +30,19 @@ export default function Home() {
       </section>
       <section
         id="certificates"
-        className="bg-background-2 dark:bg-dark-background-2 w-full"
+        className="bg-background-2 dark:bg-dark-background-2 w-full scroll-mt-10"
       >
         <CertificatesSection />
       </section>
       <section
         id="projects"
-        className="dark:bg-dark-background-1 bg-background-1 w-full"
+        className="dark:bg-dark-background-1 bg-background-1 w-full scroll-mt-10"
       >
         <ProjectsSection />
       </section>
       <section
         id="skills"
-        className="bg-background-2 dark:bg-dark-background-2 w-full"
+        className="bg-background-2 dark:bg-dark-background-2 w-full scroll-mt-16"
       >
         <SkillsSection />
       </section>
