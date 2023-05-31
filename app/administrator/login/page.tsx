@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import useAuth from "../useAuth";
 import LoadingForBtn from "@/app/loadingForBtn";
 
-
 export default function page() {
   const router = useRouter();
   type Timeout = ReturnType<typeof setTimeout>;
@@ -31,7 +30,7 @@ export default function page() {
   formData.append("password", password);
   const handleLogin = async (e: any) => {
     e.preventDefault();
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}login`,
@@ -43,6 +42,7 @@ export default function page() {
       localStorage.setItem("accessToken", response.data.accessToken);
       router.push("/administrator/certificates");
     } catch (error: any) {
+      setIsLoading(false);
       if (error.response) {
         setMsg(error.response.data.msg);
       }
