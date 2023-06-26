@@ -67,7 +67,7 @@ export default function page() {
     setIsLoading(true);
     try {
       await axiosJWT.post(
-        `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}certificates`,
+        `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}certificat`,
         formData,
         {
           headers: {
