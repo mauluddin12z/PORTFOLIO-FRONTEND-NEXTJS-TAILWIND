@@ -58,6 +58,7 @@ export default function page() {
     return res.data;
   };
 
+  console.log(token)
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const formData = new FormData();
