@@ -31,7 +31,7 @@ export default function page() {
           withCredentials: true,
         }
       );
-      router.push("/administrator/products");
+      router.push("/administrator/certificates");
       setIsLoading(false);
     } catch (error: any) {
       if (error.response) {
