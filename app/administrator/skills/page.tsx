@@ -18,7 +18,7 @@ const getSkills = async () => {
 };
 
 export default function page() {
-  const { isAuth, axiosJWT, token } = useAuth();
+  const { axiosJWT, token } = useAuth();
   const { mutate } = useSWRConfig();
 
   const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
@@ -197,12 +197,6 @@ export default function page() {
     }
   }, [dataById.data]);
 
-  if (!isAuth)
-    return (
-      <div className="w-full h-screen bg-dark-background-1">
-        <Loading />
-      </div>
-    );
   return (
     <>
       <Sidebar>

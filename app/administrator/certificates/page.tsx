@@ -18,7 +18,7 @@ const getCertificates = async () => {
 };
 
 export default function page() {
-  const { isAuth, axiosJWT, token } = useAuth();
+  const { axiosJWT, token } = useAuth();
   const { mutate } = useSWRConfig();
   const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
@@ -58,7 +58,7 @@ export default function page() {
     return res.data;
   };
 
-  console.log(token)
+  console.log(token);
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const formData = new FormData();
@@ -205,12 +205,6 @@ export default function page() {
     }
   }, [dataById.data]);
 
-  if (!isAuth)
-    return (
-      <div className="w-full h-screen bg-dark-background-1">
-        <Loading />
-      </div>
-    );
   return (
     <>
       <Sidebar>

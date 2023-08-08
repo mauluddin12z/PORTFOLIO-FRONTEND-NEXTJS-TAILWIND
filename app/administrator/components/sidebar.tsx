@@ -7,20 +7,26 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import useAuth from "../useAuth";
 import Modal from "./modal";
+import Loading from "@/app/loading";
 
 interface Props {
   children: any;
 }
 
 export const SidebarToggleExport = () => {
-  const isLg = window.matchMedia("(min-width: 1024px)").matches;
-  const [sidebarToggle, setSidebarToggle] = useState(isLg ? true : false);
+  const [sidebarToggle, setSidebarToggle] = useState(false);
+
+  useEffect(() => {
+    const isLg = window.matchMedia("(min-width: 1024px)").matches;
+    setSidebarToggle(isLg);
+  }, []);
+
   return { sidebarToggle, setSidebarToggle };
 };
 
 export default function sidebar({ children }: Props) {
   const { sidebarToggle, setSidebarToggle } = SidebarToggleExport();
-  useAuth();
+  const { isUserLoggedIn } = useAuth();
   const router = useRouter();
   const [isModalLogoutOpen, setIsModalLogoutOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -59,7 +65,7 @@ export default function sidebar({ children }: Props) {
       icon: "fa-solid fa-gears",
     },
   ];
-
+  if (!isUserLoggedIn) return <Loading />;
   return (
     <>
       <div className="w-full h-auto min-h-screen bg-dark-background-2">
