@@ -10,15 +10,7 @@ import LoadingForBtn from "@/app/loadingForBtn";
 export default function page() {
   const router = useRouter();
   type Timeout = ReturnType<typeof setTimeout>;
-  const { isAuth, msgToken } = useAuth();
-  useEffect(() => {
-    if (isAuth) {
-      router.push("/administrator/certificates");
-    }
-    if (msgToken !== null) {
-      setMsg(msgToken);
-    }
-  }, [isAuth, msgToken]);
+  const { isUserLoggedIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
@@ -32,20 +24,22 @@ export default function page() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_MY_BACKEND_URL}login`,
+      await axios.post(
+        process.env.NEXT_PUBLIC_MY_BACKEND_URL + "login",
         formData,
         {
           withCredentials: true,
         }
       );
-      localStorage.setItem("accessToken", response.data.accessToken);
-      router.push("/administrator/certificates");
-    } catch (error: any) {
+      router.push("/administrator/products");
       setIsLoading(false);
+    } catch (error: any) {
       if (error.response) {
         setMsg(error.response.data.msg);
+      } else {
+        setMsg("Error");
       }
+      setIsLoading(false);
     }
   };
 
