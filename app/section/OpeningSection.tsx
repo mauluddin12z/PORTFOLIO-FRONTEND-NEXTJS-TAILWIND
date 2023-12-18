@@ -43,12 +43,12 @@ export default function OpeningSection() {
                 Hidayat Mauluddin
               </div>
             </div>
-            <div className="text-[16px] text-accent-4 dark:text-dark-accent-4 z-20 lg:w-10/12 w-full mb-10">
-              Saya seorang Fullstack Web Developer dengan pengalaman dalam
-              membangun aplikasi web yang kompleks dan dinamis, menggunakan
-              teknologi-teknologi terkini dalam industri seperti HTML, CSS,
-              JavaScript, Node.js, dan React. Jika anda membutuhkan website yang
-              dapat membantu anda. silahkan hubungi saya.
+            <div className="text-[16px] text-accent-4 dark:text-dark-accent-4 z-20 lg:w-10/12 w-full mb-10 text-justify">
+              I am a Fullstack Web Developer with experience in building complex
+              and dynamic web applications, utilizing cutting-edge technologies
+              in the industry such as HTML, CSS, JavaScript, Node.js, and React.
+              If you are in need of a Full Stack Developer or someone in a
+              similar field, please feel free to contact me.
             </div>
             <div className="flex gap-x-6 items-center">
               <Link
