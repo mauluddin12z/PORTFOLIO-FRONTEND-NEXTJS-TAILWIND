@@ -54,7 +54,7 @@ export default function HeaderSection() {
   useEffect(() => {
     setMounted(true);
     const handleScroll = () => {
-      const position = window.pageYOffset;
+      const position = window.scrollY;
       const threshold = 10;
       setScrolled(position > threshold);
     };
@@ -105,6 +105,7 @@ export default function HeaderSection() {
             <li className="flex flex-row justify-center items-center gap-x-4 mt-10 lg:hidden">
               {socialMedia?.map((socialMedia: any, index: any) => (
                 <Link
+                  aria-label={socialMedia.link}
                   key={index}
                   href={socialMedia.link}
                   target="_blank"

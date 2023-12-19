@@ -39,7 +39,13 @@ export default function SkillsSection() {
           <div className="flex flex-wrap justify-center items-center">
             {data ? (
               data?.map((skill: any, index: any) => (
-                <div key={index} className="w-4/12 lg:w-2/12 aspect-square p-1">
+                <div
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-easing="ease-in-out"
+                  key={index}
+                  className="w-4/12 lg:w-2/12 aspect-square p-1"
+                >
                   <div className="bg-background-1/50 dark:bg-dark-background-1/50 rounded-2xl w-full h-full flex justify-center items-center">
                     {isRenderingImage && (
                       <div className="w-[400px] h-[300px] hover:opacity-90">

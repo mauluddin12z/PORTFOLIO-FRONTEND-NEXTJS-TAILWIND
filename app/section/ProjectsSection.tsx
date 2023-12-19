@@ -39,7 +39,13 @@ export default function ProjectsSection() {
         <div className="flex relative lg:p-0 flex-wrap">
           {data ? (
             data?.map((project: any, index: any) => (
-              <div key={index} className="lg:w-6/12 w-full h-full p-6">
+              <div
+                data-aos="fade-up"
+                data-aos-duration="500"
+                data-aos-easing="ease-in-out"
+                key={index}
+                className="lg:w-6/12 w-full h-full p-6"
+              >
                 <div className="lg:p-6 p-5 rounded-lg bg-background-1 dark:bg-dark-background-1 flex flex-col justify-center shadow-[0px_0px_5px] shadow-black/20 dark:shadow-black/50">
                   <Link
                     href={`${project.imageUrl}`}

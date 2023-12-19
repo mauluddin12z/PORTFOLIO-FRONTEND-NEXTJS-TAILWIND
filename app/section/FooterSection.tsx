@@ -64,6 +64,7 @@ export default function FooterSection() {
           {socialMedia?.map((socialMedia: any, index: any) => (
             <div key={index}>
               <Link
+                aria-label={socialMedia.link}
                 href={socialMedia.link}
                 target="_blank"
                 rel="noopener noreferrer"
