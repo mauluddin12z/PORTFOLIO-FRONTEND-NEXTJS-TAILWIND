@@ -54,7 +54,6 @@ export default function CertificateSection() {
   }
 
   return (
-    <>
       <div className="relative flex justify-center items-center h-fit w-fit">
         <div
           className={`lg:w-384 w-96 flex items-center overflow-hidden relative`}
@@ -81,8 +80,8 @@ export default function CertificateSection() {
                           src={img.imageUrl}
                           width={500}
                           height={500}
-                          alt="test"
-                          className="w-full h-auto"
+                          alt={img.imageUrl}
+                          className="w-full object-contain"
                           priority={true}
                           unoptimized={true}
                         />
@@ -109,6 +108,5 @@ export default function CertificateSection() {
           <i className="fa-solid fa-chevron-left"></i>
         </button>
       </div>
-    </>
   );
 }

@@ -7,7 +7,7 @@ module.exports = {
       colors: {
         accent: {
           1: "#2c2c2e",
-          2: "#a97dff",
+          2: "#7f5af0",
           3: "#50ff9d",
           4: "#474749",
         },

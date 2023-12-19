@@ -73,7 +73,7 @@ export default function CertificateSection() {
                           alt="certificate"
                           width={500}
                           height={500}
-                          className={`w-full ${
+                          className={`w-full object-contain ${
                             !isRenderingImage ? "block" : "hidden"
                           }`}
                           unoptimized

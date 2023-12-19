@@ -46,7 +46,7 @@ export default function ProjectsSection() {
                 key={index}
                 className="lg:w-6/12 w-full h-full p-6"
               >
-                <div className="lg:p-6 p-5 rounded-lg bg-background-1 dark:bg-dark-background-1 flex flex-col justify-center shadow-[0px_0px_5px] shadow-black/20 dark:shadow-black/50">
+                <div className="lg:p-5 p-4 rounded-lg bg-background-1 dark:bg-dark-background-1 flex flex-col justify-center shadow-[0px_0px_5px] shadow-black/20 dark:shadow-black/50">
                   <Link
                     href={`${project.imageUrl}`}
                     target="_blank"
@@ -60,10 +60,10 @@ export default function ProjectsSection() {
                       )}
                       <Image
                         src={project.imageUrl}
-                        alt="projectImg"
+                        alt={project.imageUrl}
                         width={500}
-                        height={300}
-                        className={`w-full h-auto ${
+                        height={500}
+                        className={`w-full object-contain${
                           !isRenderingImage ? "block" : "hidden"
                         }`}
                         priority={true}
@@ -79,7 +79,7 @@ export default function ProjectsSection() {
                       rel="noopener noreferrer"
                       className="text-white bg-gray-800 hover:bg-gray-900 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-[12px] lg:text-[12px] px-5 py-2.5 text-center"
                     >
-                      Visit website
+                      Visit website{" "}
                       <i className="fa-solid fa-arrow-up-right-from-square ml-2"></i>
                     </Link>
                   </div>

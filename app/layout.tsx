@@ -3,17 +3,18 @@ import { Providers } from "./providers";
 
 export const metadata = {
   title: "Portfolio",
-  description: "Portfolio",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="My Portfolio" />
         <link
           rel="shortcut icon"
           href="./favicon.ico"
