@@ -16,6 +16,7 @@ const getSkills = async () => {
 export default function SkillsSection() {
    const { data } = useSWR("skills", getSkills);
    const [isRenderingImage, setIsRenderingImage] = useState(true);
+   const [hoveredIndex, setHoveredIndex] = useState(null);
    const renderItems = [];
    for (let i = 0; i < 4; i++) {
       renderItems.push(
@@ -46,17 +47,30 @@ export default function SkillsSection() {
                            key={index}
                            className="w-4/12 lg:w-2/12 aspect-square p-1"
                         >
-                           <div className="bg-background-1/50 dark:bg-dark-background-1/50 rounded-2xl w-full h-full flex justify-center items-center">
+                           <div className="bg-background-1/50 dark:bg-dark-background-1/50 rounded-2xl w-full h-full flex justify-center items-center relative">
                               {isRenderingImage && (
                                  <div className="w-[400px] h-[300px] hover:opacity-90">
                                     <LoadingData />
                                  </div>
                               )}
+                              <div
+                                 className={`absolute transition-all duration-300 top-0 ${
+                                    hoveredIndex === index
+                                       ? "opacity-100 -translate-y-8"
+                                       : "opacity-0"
+                                 }`}
+                              >
+                                 <div className="bg-gray-100/95 rounded-lg  px-6 py-1 text-black text-xs">
+                                    {skill.skill}
+                                 </div>
+                              </div>
                               <Image
                                  src={driveUrlConverter(skill.imageUrl)!}
                                  width={500}
                                  height={500}
                                  alt="skills"
+                                 onMouseEnter={() => setHoveredIndex(index)}
+                                 onMouseLeave={() => setHoveredIndex(null)}
                                  className={`w-full h-auto rounded-2xl my-animate-bounce p-5 ${
                                     !isRenderingImage ? "block" : "hidden"
                                  }`}
